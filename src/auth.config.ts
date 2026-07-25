@@ -1,5 +1,30 @@
 import type { NextAuthConfig } from "next-auth";
 
+const useSecureCookies = process.env.NODE_ENV === "production";
+
+/**
+ * When the app is served across multiple subdomains (e.g. platform.* and
+ * api.*), set AUTH_COOKIE_DOMAIN to the shared parent (".aureoncapitalai.com")
+ * so the session cookie is valid on all of them. Leave it unset for a single
+ * domain / local dev.
+ */
+const cookieDomain = process.env.AUTH_COOKIE_DOMAIN;
+
+const sharedCookies: NextAuthConfig["cookies"] = cookieDomain
+  ? {
+      sessionToken: {
+        name: `${useSecureCookies ? "__Secure-" : ""}authjs.session-token`,
+        options: {
+          httpOnly: true,
+          sameSite: "lax",
+          path: "/",
+          secure: useSecureCookies,
+          domain: cookieDomain,
+        },
+      },
+    }
+  : undefined;
+
 /**
  * Base Auth.js config shared by the full auth instance (`auth.ts`) and the
  * lightweight instance used in `proxy.ts`. Deliberately imports NO database or
@@ -8,6 +33,7 @@ import type { NextAuthConfig } from "next-auth";
 export const authConfig = {
   pages: { signIn: "/login" },
   session: { strategy: "jwt" },
+  ...(sharedCookies ? { cookies: sharedCookies } : {}),
   providers: [],
   callbacks: {
     jwt({ token, user }) {
