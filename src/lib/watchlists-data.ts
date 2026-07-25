@@ -1,0 +1,58 @@
+export const watchlistGroups = [
+  {
+    id: "my-crypto",
+    name: "My Crypto",
+    count: 6,
+    change: "+2.31%",
+    up: true,
+    assets: [
+      { symbol: "BTC/USD", name: "Bitcoin", icon: "cryptocurrency-color:btc", price: "67,842.21", change: "+1.18%", abs: "+789.40", up: true },
+      { symbol: "ETH/USD", name: "Ethereum", icon: "cryptocurrency-color:eth", price: "3,684.50", change: "+0.92%", abs: "+33.60", up: true },
+      { symbol: "SOL/USD", name: "Solana", icon: "cryptocurrency-color:sol", price: "168.30", change: "+2.44%", abs: "+4.01", up: true },
+      { symbol: "XRP/USD", name: "Ripple", icon: "cryptocurrency-color:xrp", price: "0.5210", change: "-0.65%", abs: "-0.0034", up: false },
+      { symbol: "ADA/USD", name: "Cardano", icon: "cryptocurrency-color:ada", price: "0.4520", change: "+3.11%", abs: "+0.0136", up: true },
+      { symbol: "DOGE/USD", name: "Dogecoin", icon: "cryptocurrency-color:doge", price: "0.1620", change: "+5.02%", abs: "+0.0077", up: true },
+    ],
+  },
+  {
+    id: "forex-majors",
+    name: "Forex Majors",
+    count: 5,
+    change: "+0.27%",
+    up: true,
+    assets: [
+      { symbol: "EUR/USD", name: "Euro / US Dollar", icon: "mdi:currency-eur", price: "1.0845", change: "-0.21%", abs: "-0.0023", up: false },
+      { symbol: "GBP/USD", name: "Pound / US Dollar", icon: "mdi:currency-gbp", price: "1.2703", change: "+0.15%", abs: "+0.0019", up: true },
+      { symbol: "USD/JPY", name: "US Dollar / Yen", icon: "mdi:currency-jpy", price: "156.82", change: "+0.08%", abs: "+0.13", up: true },
+      { symbol: "AUD/USD", name: "Aussie / US Dollar", icon: "mdi:currency-usd", price: "0.6664", change: "-0.18%", abs: "-0.0012", up: false },
+      { symbol: "USD/CAD", name: "US Dollar / Loonie", icon: "mdi:currency-usd", price: "1.3642", change: "+0.11%", abs: "+0.0015", up: true },
+    ],
+  },
+  {
+    id: "us-tech",
+    name: "US Tech Stocks",
+    count: 5,
+    change: "-0.12%",
+    up: false,
+    assets: [
+      { symbol: "AAPL", name: "Apple Inc.", icon: "mdi:apple", price: "195.95", change: "+1.39%", abs: "+2.69", up: true },
+      { symbol: "NVDA", name: "NVIDIA Corp.", icon: "mdi:chip", price: "1,105.44", change: "+5.21%", abs: "+54.77", up: true },
+      { symbol: "TSLA", name: "Tesla, Inc.", icon: "mdi:car-electric", price: "175.43", change: "+3.28%", abs: "+5.57", up: true },
+      { symbol: "META", name: "Meta Platforms", icon: "mdi:facebook", price: "497.30", change: "+2.11%", abs: "+10.28", up: true },
+      { symbol: "AMZN", name: "Amazon.com", icon: "mdi:cart-outline", price: "184.70", change: "-0.42%", abs: "-0.78", up: false },
+    ],
+  },
+  {
+    id: "commodities",
+    name: "Commodities",
+    count: 4,
+    change: "+0.61%",
+    up: true,
+    assets: [
+      { symbol: "XAU/USD", name: "Gold", icon: "mdi:gold", price: "2,345.70", change: "+0.41%", abs: "+9.55", up: true },
+      { symbol: "XAG/USD", name: "Silver", icon: "mdi:gold", price: "29.85", change: "+0.72%", abs: "+0.21", up: true },
+      { symbol: "WTI", name: "Crude Oil", icon: "mdi:oil", price: "78.35", change: "-0.32%", abs: "-0.25", up: false },
+      { symbol: "NG", name: "Natural Gas", icon: "mdi:fire", price: "2.71", change: "+1.87%", abs: "+0.05", up: true },
+    ],
+  },
+];
