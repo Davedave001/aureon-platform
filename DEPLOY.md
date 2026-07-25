@@ -55,6 +55,28 @@ Coolify, not in a committed file.
 3. The app applies the schema automatically on first boot via
    `prisma migrate deploy` (see `prisma/migrations/`).
 
+## Migrations with two containers (important)
+
+Both containers build the **same image** and share **one database**, so only
+**one** should apply migrations. Set on the container that should NOT migrate:
+
+```
+RUN_MIGRATIONS=false
+```
+
+Recommended: let the **API** container run migrations (leave `RUN_MIGRATIONS`
+unset there) and set `RUN_MIGRATIONS=false` on the **frontend** container. Both
+containers must build **this same repo at the same commit** so their
+`prisma/migrations/` folders are identical — otherwise they conflict.
+
+If a migration gets stuck in a failed state (`P3009`) and you have no data worth
+keeping, reset the schema and redeploy:
+
+```sql
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+```
+
 ## After deploy — create your first account
 
 There is no seeded user. Visit `https://platform.aureoncapitalai.com/signup`,

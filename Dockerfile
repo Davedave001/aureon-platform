@@ -46,5 +46,7 @@ COPY package.json next.config.ts prisma.config.ts ./
 
 EXPOSE 3000
 
-# Apply any pending migrations, then start the server.
-CMD ["sh", "-c", "npx prisma migrate deploy && npm run start -- -H 0.0.0.0 -p ${PORT:-3000}"]
+# Apply pending migrations (unless RUN_MIGRATIONS=false), then start the server.
+# In a multi-container setup sharing one database, run migrations on ONE
+# container only — set RUN_MIGRATIONS=false on the others.
+CMD ["sh", "-c", "if [ \"$RUN_MIGRATIONS\" != \"false\" ]; then npx prisma migrate deploy; fi && npm run start -- -H 0.0.0.0 -p ${PORT:-3000}"]
