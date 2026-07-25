@@ -31,6 +31,9 @@ const sharedCookies: NextAuthConfig["cookies"] = cookieDomain
  * bcrypt code so the proxy stays lean — providers are added in `auth.ts`.
  */
 export const authConfig = {
+  // The app runs behind a reverse proxy (Coolify/Traefik), so trust the
+  // forwarded host. Avoids UntrustedHost errors without relying on env parsing.
+  trustHost: true,
   pages: { signIn: "/login" },
   session: { strategy: "jwt" },
   ...(sharedCookies ? { cookies: sharedCookies } : {}),
