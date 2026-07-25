@@ -67,10 +67,37 @@ To make a user an **admin**, set their `role` to `admin` in the DB:
 UPDATE "User" SET role = 'admin' WHERE email = 'you@example.com';
 ```
 
+## Two-container split (frontend + API) — extra vars
+
+The **Watchlists** feature is a real DB-backed API that the browser can call on
+the API container. To route data calls to `api.*` (rather than same-origin):
+
+**Frontend image build arg** (NEXT_PUBLIC_* is baked in at build time):
+
+```
+--build-arg NEXT_PUBLIC_API_URL=https://api.aureoncapitalai.com
+```
+
+In Coolify, set `NEXT_PUBLIC_API_URL=https://api.aureoncapitalai.com` as a
+**build-time** variable on the frontend service. Leave it empty to keep data
+calls same-origin.
+
+**API container runtime env** — allow the frontend origin through CORS:
+
+| Variable         | Value                                      |
+| ---------------- | ------------------------------------------ |
+| `ALLOWED_ORIGIN` | `https://platform.aureoncapitalai.com`     |
+
+Both containers still need the shared vars from the tables above (same
+`AUTH_SECRET`, same `DATABASE_URL`, `AUTH_COOKIE_DOMAIN=.aureoncapitalai.com`).
+The shared cookie + CORS let the logged-in session work on cross-origin calls to
+`api.*`.
+
 ## What's real vs. mock
 
 - **Real**: auth (signup/login/logout, sessions, hashed passwords, route
-  protection), the Postgres data layer for users.
-- **Mock**: all feature content (community posts, news, markets, events, etc.)
-  is still static sample data in `src/lib/*-data.ts`. Wiring those to the
-  database is the next phase.
+  protection) and **Watchlists** (create/delete lists, add/remove symbols,
+  persisted per user in Postgres, served via the API with CORS).
+- **Mock**: the rest of the feature content (community posts, news, markets,
+  events, etc.) is still static sample data in `src/lib/*-data.ts`. Watchlists
+  is the template for wiring the rest to the database.

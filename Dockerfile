@@ -15,6 +15,12 @@ RUN npm ci
 # ── Build ─────────────────────────────────────────────────────────────────────
 FROM base AS builder
 ENV NEXT_TELEMETRY_DISABLED=1
+# NEXT_PUBLIC_* is inlined at build time. Set this build arg on the FRONTEND
+# image so the browser calls the API container, e.g.
+#   --build-arg NEXT_PUBLIC_API_URL=https://api.aureoncapitalai.com
+# Leave empty to call the app's own origin (single-domain / api requests local).
+ARG NEXT_PUBLIC_API_URL=""
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 # Generate the Prisma client, then build the Next.js app.
