@@ -1,0 +1,15 @@
+node_modules
+.next
+.git
+.env
+.env.*
+*.db
+*.db-journal
+npm-debug.log*
+Dockerfile
+.dockerignore
+docs
+.claude
+.windsurf
+.agents
+README.md

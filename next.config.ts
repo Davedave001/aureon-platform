@@ -1,13 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Native / Prisma modules must stay external to the server bundle so their
-  // native bindings and file resolution work at runtime.
-  serverExternalPackages: [
-    "better-sqlite3",
-    "@prisma/adapter-better-sqlite3",
-    "@prisma/client",
-  ],
+  // Prisma / pg must stay external to the server bundle so runtime resolution
+  // and native TLS work correctly.
+  serverExternalPackages: ["pg", "@prisma/adapter-pg", "@prisma/client"],
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
