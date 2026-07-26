@@ -11,18 +11,66 @@ datasource db {
 }
 
 model User {
-  id            String      @id @default(cuid())
+  id            String            @id @default(cuid())
   name          String?
-  email         String      @unique
+  email         String            @unique
   emailVerified DateTime?
   image         String?
   passwordHash  String?
-  role          String      @default("member")
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  role          String            @default("member")
+  handle        String?
+  bio           String?
+  location      String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
   accounts      Account[]
   sessions      Session[]
   watchlists    Watchlist[]
+  tradeIdeas    TradeIdea[]
+  inquiries     InvestorInquiry[]
+}
+
+model TradeIdea {
+  id         String   @id @default(cuid())
+  userId     String
+  symbol     String
+  side       String // "buy" | "sell"
+  entry      String?
+  target     String?
+  stop       String?
+  note       String?
+  confidence Int      @default(3)
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model InvestorInquiry {
+  id         String   @id @default(cuid())
+  userId     String
+  fullName   String
+  amount     String?
+  currency   String   @default("USD")
+  goal       String?
+  risk       String?
+  horizon    String?
+  markets    String?
+  comments   String?
+  status     String   @default("new")
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model NewsletterSubscriber {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  topics      String? // comma-separated
+  frequency   String   @default("Weekly")
+  confirmedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
 }
 
 model Watchlist {

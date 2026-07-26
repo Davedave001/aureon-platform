@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { SectionCard } from "@/components/shared/section-card";
-import { ProfileHeader } from "@/components/profile/profile-header";
+import { ProfileView } from "@/components/profile/profile-view";
 import {
   profile,
   verificationItems,
@@ -20,16 +20,10 @@ export default function ProfilePage() {
   return (
     <AppShell title="Profile" subtitle="Your public presence on Aureon.">
       <div className="mx-auto flex max-w-[1200px] flex-col gap-5">
-        <ProfileHeader />
+        <ProfileView />
 
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
           <div className="flex flex-col gap-5 lg:col-span-2">
-            <SectionCard title="About">
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                {profile.bio}
-              </p>
-            </SectionCard>
-
             <SectionCard title="Trading Interests">
               <div className="flex flex-wrap gap-2">
                 {profile.interests.map((i) => (

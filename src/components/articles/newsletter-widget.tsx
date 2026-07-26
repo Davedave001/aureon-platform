@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { SectionCard } from "@/components/shared/section-card";
+import { apiFetch } from "@/lib/api";
 import {
   newsletterTopics,
   newsletterFrequency,
@@ -13,6 +14,31 @@ import {
 
 export function NewsletterWidget() {
   const [frequency, setFrequency] = useState("Weekly");
+  const [topics, setTopics] = useState<string[]>(
+    newsletterTopics.filter((t) => t.checked).map((t) => t.label)
+  );
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  function toggleTopic(label: string) {
+    setSaved(false);
+    setTopics((prev) =>
+      prev.includes(label)
+        ? prev.filter((t) => t !== label)
+        : [...prev, label]
+    );
+  }
+
+  async function savePreferences() {
+    setSaving(true);
+    setSaved(false);
+    const res = await apiFetch("/api/newsletter", {
+      method: "POST",
+      body: JSON.stringify({ topics, frequency }),
+    });
+    setSaving(false);
+    if (res.ok) setSaved(true);
+  }
 
   return (
     <SectionCard title="Newsletter">
@@ -49,7 +75,8 @@ export function NewsletterWidget() {
               >
                 <input
                   type="checkbox"
-                  defaultChecked={t.checked}
+                  checked={topics.includes(t.label)}
+                  onChange={() => toggleTopic(t.label)}
                   className="size-3.5 accent-primary"
                 />
                 {t.label}
@@ -100,7 +127,13 @@ export function NewsletterWidget() {
             ))}
           </div>
 
-          <Button className="mt-4 w-full">Save Preferences</Button>
+          <Button
+            className="mt-4 w-full"
+            onClick={() => void savePreferences()}
+            disabled={saving}
+          >
+            {saving ? "Saving…" : saved ? "Preferences Saved ✓" : "Save Preferences"}
+          </Button>
         </TabsContent>
 
         <TabsContent value="mine" className="mt-4">
