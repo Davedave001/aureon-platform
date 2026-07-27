@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { SectionCard } from "@/components/shared/section-card";
+import { apiFetch } from "@/lib/api";
 import {
   settingsTabs,
   notificationSettings,
@@ -36,11 +37,13 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 function ToggleRow({
   label,
   desc,
-  on,
+  checked,
+  onCheckedChange,
 }: {
   label: string;
   desc: string;
-  on: boolean;
+  checked: boolean;
+  onCheckedChange: (v: boolean) => void;
 }) {
   return (
     <div className="flex items-center justify-between gap-4 py-2.5">
@@ -48,10 +51,12 @@ function ToggleRow({
         <p className="text-sm font-medium text-foreground">{label}</p>
         <p className="text-xs text-muted-foreground">{desc}</p>
       </div>
-      <Switch defaultChecked={on} />
+      <Switch checked={checked} onCheckedChange={onCheckedChange} />
     </div>
   );
 }
+
+type Prefs = Record<string, unknown>;
 
 export function SettingsView() {
   const [tab, setTab] = useState<(typeof settingsTabs)[number]["key"]>("Account");
@@ -59,11 +64,85 @@ export function SettingsView() {
 
   // Avoid a hydration mismatch: theme is only known on the client.
   const [mounted, setMounted] = useState(false);
+  const [prefs, setPrefs] = useState<Prefs>({});
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [bio, setBio] = useState("");
+  const [timezone, setTimezone] = useState("GMT+0 (London)");
+  const [language, setLanguage] = useState("English");
+  const [savingAccount, setSavingAccount] = useState(false);
+  const [savedAccount, setSavedAccount] = useState(false);
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
+    void (async () => {
+      const [prefRes, profRes] = await Promise.all([
+        apiFetch("/api/preferences"),
+        apiFetch("/api/profile"),
+      ]);
+      if (prefRes.ok) {
+        const { preferences } = (await prefRes.json()) as { preferences: Prefs };
+        setPrefs(preferences ?? {});
+        if (typeof preferences?.timezone === "string")
+          setTimezone(preferences.timezone);
+        if (typeof preferences?.language === "string")
+          setLanguage(preferences.language);
+      }
+      if (profRes.ok) {
+        const { profile } = (await profRes.json()) as {
+          profile: {
+            name: string | null;
+            email: string;
+            handle: string | null;
+            bio: string | null;
+          };
+        };
+        setName(profile.name ?? "");
+        setUsername(profile.handle ?? "");
+        setEmail(profile.email);
+        setBio(profile.bio ?? "");
+      }
+    })();
   }, []);
+
   const activeTheme = mounted ? theme : undefined;
+
+  function togglePref(key: string, fallback: boolean) {
+    const current =
+      typeof prefs[key] === "boolean" ? (prefs[key] as boolean) : fallback;
+    const next = { ...prefs, [key]: !current };
+    setPrefs(next);
+    void apiFetch("/api/preferences", {
+      method: "PUT",
+      body: JSON.stringify({ preferences: next }),
+    });
+  }
+
+  function prefOn(key: string, fallback: boolean) {
+    return typeof prefs[key] === "boolean" ? (prefs[key] as boolean) : fallback;
+  }
+
+  async function saveAccount() {
+    setSavingAccount(true);
+    setSavedAccount(false);
+    await Promise.all([
+      apiFetch("/api/profile", {
+        method: "PATCH",
+        body: JSON.stringify({ name, handle: username, bio }),
+      }),
+      apiFetch("/api/preferences", {
+        method: "PUT",
+        body: JSON.stringify({
+          preferences: { ...prefs, timezone, language },
+        }),
+      }),
+    ]);
+    setPrefs((p) => ({ ...p, timezone, language }));
+    setSavingAccount(false);
+    setSavedAccount(true);
+  }
 
   return (
     <div className="grid grid-cols-1 gap-5 lg:grid-cols-4">
@@ -94,16 +173,37 @@ export function SettingsView() {
           <SectionCard title="Account">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field label="Full Name">
-                <Input defaultValue="David O." className={inputClass} />
+                <Input
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    setSavedAccount(false);
+                  }}
+                  className={inputClass}
+                />
               </Field>
               <Field label="Username">
-                <Input defaultValue="davidO" className={inputClass} />
+                <Input
+                  value={username}
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                    setSavedAccount(false);
+                  }}
+                  className={inputClass}
+                />
               </Field>
               <Field label="Email">
-                <Input defaultValue="omondidavid271@gmail.com" type="email" />
+                <Input value={email} type="email" disabled />
               </Field>
               <Field label="Timezone">
-                <select className={selectClass} defaultValue="GMT+0 (London)">
+                <select
+                  className={selectClass}
+                  value={timezone}
+                  onChange={(e) => {
+                    setTimezone(e.target.value);
+                    setSavedAccount(false);
+                  }}
+                >
                   <option>GMT+0 (London)</option>
                   <option>GMT-5 (New York)</option>
                   <option>GMT+1 (Berlin)</option>
@@ -111,7 +211,14 @@ export function SettingsView() {
                 </select>
               </Field>
               <Field label="Language">
-                <select className={selectClass} defaultValue="English">
+                <select
+                  className={selectClass}
+                  value={language}
+                  onChange={(e) => {
+                    setLanguage(e.target.value);
+                    setSavedAccount(false);
+                  }}
+                >
                   <option>English</option>
                   <option>Spanish</option>
                   <option>French</option>
@@ -122,15 +229,26 @@ export function SettingsView() {
             <Field label="Bio">
               <textarea
                 rows={3}
-                defaultValue="Multi-asset trader focused on macro and crypto."
+                value={bio}
+                onChange={(e) => {
+                  setBio(e.target.value);
+                  setSavedAccount(false);
+                }}
                 className={cn(selectClass, "mt-4 resize-none")}
               />
             </Field>
-            <div className="mt-4 flex justify-end gap-2">
-              <Button variant="outline" size="sm">
-                Cancel
+            <div className="mt-4 flex justify-end">
+              <Button
+                size="sm"
+                onClick={() => void saveAccount()}
+                disabled={savingAccount}
+              >
+                {savingAccount
+                  ? "Saving…"
+                  : savedAccount
+                    ? "Saved ✓"
+                    : "Save Changes"}
               </Button>
-              <Button size="sm">Save Changes</Button>
             </div>
           </SectionCard>
         ) : null}
@@ -139,7 +257,13 @@ export function SettingsView() {
           <SectionCard title="Email Notifications">
             <div className="divide-y divide-border">
               {notificationSettings.map((n) => (
-                <ToggleRow key={n.key} label={n.label} desc={n.desc} on={n.on} />
+                <ToggleRow
+                  key={n.key}
+                  label={n.label}
+                  desc={n.desc}
+                  checked={prefOn(n.key, n.on)}
+                  onCheckedChange={() => togglePref(n.key, n.on)}
+                />
               ))}
             </div>
           </SectionCard>
@@ -244,7 +368,13 @@ export function SettingsView() {
           <SectionCard title="Privacy">
             <div className="divide-y divide-border">
               {privacyToggles.map((p) => (
-                <ToggleRow key={p.key} label={p.label} desc={p.desc} on={p.on} />
+                <ToggleRow
+                  key={p.key}
+                  label={p.label}
+                  desc={p.desc}
+                  checked={prefOn(p.key, p.on)}
+                  onCheckedChange={() => togglePref(p.key, p.on)}
+                />
               ))}
             </div>
           </SectionCard>
