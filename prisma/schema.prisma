@@ -32,6 +32,25 @@ model User {
   comments      Comment[]
   postVotes     PostVote[]
   notifications Notification[]
+  aiRequests    AiRequest[]
+}
+
+model AiRequest {
+  id           String   @id @default(cuid())
+  userId       String
+  businessName String
+  website      String?
+  email        String
+  businessSize String?
+  industry     String?
+  problem      String?
+  budget       String?
+  timeline     String?
+  status       String   @default("new")
+  createdAt    DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model Notification {
