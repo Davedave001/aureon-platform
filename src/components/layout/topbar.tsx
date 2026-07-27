@@ -1,11 +1,13 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { Icon } from "@iconify/react";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { apiFetch } from "@/lib/api";
 import { initialsOf, roleLabel } from "@/lib/user-display";
 import {
   DropdownMenu,
@@ -25,7 +27,6 @@ import {
 export function Topbar({
   title,
   subtitle,
-  notificationCount = 3,
   userName,
   userRole,
   userInitials,
@@ -33,7 +34,6 @@ export function Topbar({
 }: {
   title: string;
   subtitle?: string;
-  notificationCount?: number;
   userName?: string;
   userRole?: string;
   userInitials?: string;
@@ -41,6 +41,21 @@ export function Topbar({
 }) {
   const router = useRouter();
   const { data: session } = useSession();
+  const [notificationCount, setNotificationCount] = useState(0);
+
+  useEffect(() => {
+    let active = true;
+    apiFetch("/api/notifications")
+      .then(async (res) => {
+        if (!active || !res.ok) return;
+        const data = (await res.json()) as { unread?: number };
+        setNotificationCount(data.unread ?? 0);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const displayName =
     userName ?? session?.user?.name ?? session?.user?.email ?? "Account";

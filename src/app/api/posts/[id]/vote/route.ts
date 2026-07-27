@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/db";
 import { jsonWithCors, preflight } from "@/lib/cors";
+import { notify } from "@/lib/notify";
 
 export function OPTIONS(req: Request) {
   return preflight(req);
@@ -31,6 +32,15 @@ export async function POST(
     await prisma.postVote.delete({ where: { id: existing.id } });
   } else {
     await prisma.postVote.create({ data: { postId, userId } });
+    const actorName = session.user.name ?? session.user.email ?? "Someone";
+    await notify({
+      userId: post.userId,
+      actorId: userId,
+      type: "vote",
+      title: `${actorName} upvoted your post`,
+      body: post.title,
+      link: "/community",
+    });
   }
 
   const votes = await prisma.postVote.count({ where: { postId } });

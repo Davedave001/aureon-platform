@@ -31,6 +31,22 @@ model User {
   posts         Post[]
   comments      Comment[]
   postVotes     PostVote[]
+  notifications Notification[]
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String // "comment" | "vote" | "system"
+  title     String
+  body      String?
+  link      String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, read])
+  @@index([userId, createdAt])
 }
 
 model Post {
