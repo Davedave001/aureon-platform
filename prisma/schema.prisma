@@ -33,6 +33,38 @@ model User {
   postVotes     PostVote[]
   notifications Notification[]
   aiRequests    AiRequest[]
+  events        Event[]
+  eventTickets  EventTicket[]
+}
+
+model Event {
+  id          String        @id @default(cuid())
+  organizerId String
+  title       String
+  description String?
+  category    String        @default("Webinar")
+  location    String?
+  startsAt    DateTime
+  price       String        @default("Free")
+  capacity    Int?
+  createdAt   DateTime      @default(now())
+  organizer   User          @relation(fields: [organizerId], references: [id], onDelete: Cascade)
+  tickets     EventTicket[]
+
+  @@index([startsAt])
+  @@index([organizerId])
+}
+
+model EventTicket {
+  id        String   @id @default(cuid())
+  eventId   String
+  userId    String
+  createdAt DateTime @default(now())
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+  @@index([userId])
 }
 
 model AiRequest {
