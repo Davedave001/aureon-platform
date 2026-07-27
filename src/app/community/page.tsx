@@ -1,7 +1,7 @@
 import { AppShell } from "@/components/layout/app-shell";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ExplorerList } from "@/components/community/explorer-list";
-import { Feed } from "@/components/community/feed";
+import { LiveFeed } from "@/components/community/live-feed";
 import { TrendingDiscussions } from "@/components/community/trending-discussions";
 import { PopularPoll } from "@/components/community/popular-poll";
 import { MyCommunitiesPanel } from "@/components/community/my-communities-panel";
@@ -33,7 +33,7 @@ export default function CommunityHubPage() {
                 <ExplorerList />
               </div>
               <div className="lg:col-span-5">
-                <Feed />
+                <LiveFeed />
               </div>
               <div className="flex flex-col gap-4 lg:col-span-2">
                 <TrendingDiscussions />
@@ -58,7 +58,7 @@ export default function CommunityHubPage() {
 
           <TabsContent value="feed" className="mt-4">
             <div className="mx-auto max-w-2xl">
-              <Feed />
+              <LiveFeed />
             </div>
           </TabsContent>
 

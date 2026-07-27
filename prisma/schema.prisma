@@ -28,6 +28,48 @@ model User {
   watchlists    Watchlist[]
   tradeIdeas    TradeIdea[]
   inquiries     InvestorInquiry[]
+  posts         Post[]
+  comments      Comment[]
+  postVotes     PostVote[]
+}
+
+model Post {
+  id           String     @id @default(cuid())
+  userId       String
+  communityKey String // "forex" | "crypto" | "stocks" | ...
+  title        String
+  body         String
+  createdAt    DateTime   @default(now())
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments     Comment[]
+  votes        PostVote[]
+
+  @@index([communityKey, createdAt])
+  @@index([userId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  body      String
+  createdAt DateTime @default(now())
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([postId])
+}
+
+model PostVote {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  createdAt DateTime @default(now())
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+  @@index([postId])
 }
 
 model TradeIdea {
