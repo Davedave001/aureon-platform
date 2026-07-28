@@ -18,6 +18,8 @@ type Profile = {
   bio: string | null;
   location: string | null;
   role: string;
+  verified: boolean;
+  badge: string | null;
   createdAt: string;
 };
 
@@ -105,7 +107,15 @@ export function ProfileView() {
               <AvatarFallback>{displayName.slice(0, 2)}</AvatarFallback>
             </Avatar>
             <div>
-              <h2 className="text-xl font-bold text-white">{displayName}</h2>
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="text-xl font-bold text-white">{displayName}</h2>
+                {profile.verified ? (
+                  <span className="flex items-center gap-1 rounded-full border border-primary/40 bg-primary/15 px-2 py-0.5 text-[11px] font-medium text-primary">
+                    <Icon icon="mdi:check-decagram" className="size-3.5" />
+                    {profile.badge ?? "Verified"}
+                  </span>
+                ) : null}
+              </div>
               <p className="text-sm text-white/60">
                 {profile.handle ? `@${profile.handle}` : profile.email}
               </p>

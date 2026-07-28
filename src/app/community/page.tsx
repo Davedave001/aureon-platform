@@ -7,8 +7,8 @@ import { PopularPoll } from "@/components/community/popular-poll";
 import { MyCommunitiesPanel } from "@/components/community/my-communities-panel";
 import { RecentActivity } from "@/components/community/recent-activity";
 import { SavedDiscussions } from "@/components/community/saved-discussions";
-import { MentorDirectory } from "@/components/community/mentor-directory";
-import { VerificationCenter } from "@/components/community/verification-center";
+import { LiveMentorDirectory } from "@/components/community/live-mentor-directory";
+import { LiveVerificationCenter } from "@/components/community/live-verification";
 import { BadgeLevel } from "@/components/community/badge-level";
 
 export default function CommunityHubPage() {
@@ -47,11 +47,11 @@ export default function CommunityHubPage() {
             </div>
 
             <div className="mt-5">
-              <MentorDirectory />
+              <LiveMentorDirectory />
             </div>
 
             <div className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-3">
-              <VerificationCenter />
+              <LiveVerificationCenter />
               <BadgeLevel />
             </div>
           </TabsContent>
@@ -63,7 +63,7 @@ export default function CommunityHubPage() {
           </TabsContent>
 
           <TabsContent value="mentors" className="mt-4">
-            <MentorDirectory />
+            <LiveMentorDirectory />
           </TabsContent>
 
           <TabsContent value="my-communities" className="mt-4">
@@ -75,7 +75,7 @@ export default function CommunityHubPage() {
 
           <TabsContent value="verification" className="mt-4">
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-              <VerificationCenter />
+              <LiveVerificationCenter />
               <BadgeLevel />
             </div>
           </TabsContent>

@@ -4,7 +4,7 @@ import { AdminShell } from "@/components/layout/admin-shell";
 import { LiveAdmin } from "@/components/admin/live-admin";
 import { PlatformOverview } from "@/components/admin/platform-overview";
 import { RecentActivity } from "@/components/admin/recent-activity";
-import { VerificationQueue } from "@/components/admin/verification-queue";
+import { LiveVerificationQueue } from "@/components/admin/live-verification-queue";
 import { ManagementCards } from "@/components/admin/management-cards";
 import { RecentAiProjectsTable } from "@/components/admin/recent-ai-projects-table";
 import { AnalyticsOverview } from "@/components/admin/analytics-overview";
@@ -31,7 +31,7 @@ export default async function AdminPortalPage() {
               <PlatformOverview />
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <RecentActivity />
-                <VerificationQueue />
+                <LiveVerificationQueue />
               </div>
             </div>
 

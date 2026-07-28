@@ -11,6 +11,8 @@ const SELECT = {
   location: true,
   role: true,
   image: true,
+  verified: true,
+  badge: true,
   createdAt: true,
 } as const;
 
