@@ -43,6 +43,54 @@ model User {
   articleComments ArticleComment[]
   autoTradeConfig AutoTradeConfig?
   tradeOrders   TradeOrder[]
+  coursesAuthored Course[]        @relation("courseAuthor")
+  lessonProgress LessonProgress[]
+}
+
+// A video course in the trading Academy. Lessons hold direct video URLs
+// (self-hosted .mp4 / HLS), so no external embed service is required.
+model Course {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  category    String   @default("Forex")
+  level       String   @default("Beginner") // Beginner | Intermediate | Advanced
+  coverImage  String?
+  published   Boolean  @default(false)
+  createdById String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   User     @relation("courseAuthor", fields: [createdById], references: [id], onDelete: Cascade)
+  lessons     Lesson[]
+
+  @@index([published, createdAt])
+}
+
+model Lesson {
+  id          String           @id @default(cuid())
+  courseId    String
+  title       String
+  description String?
+  videoUrl    String
+  duration    String? // e.g. "12:30"
+  order       Int              @default(0)
+  createdAt   DateTime         @default(now())
+  course      Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  progress    LessonProgress[]
+
+  @@index([courseId, order])
+}
+
+model LessonProgress {
+  id        String   @id @default(cuid())
+  userId    String
+  lessonId  String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@index([userId])
 }
 
 // A market-moving news item picked up from a source (X, Truth Social, a news

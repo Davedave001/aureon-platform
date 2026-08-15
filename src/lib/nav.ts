@@ -8,6 +8,7 @@ export const primaryNav: NavItem[] = [
   { label: "Dashboard", href: "/", icon: "mdi:view-dashboard" },
   { label: "Community Hub", href: "/community", icon: "mdi:account-group" },
   { label: "AI Solutions", href: "/ai-solutions", icon: "mdi:creation" },
+  { label: "Academy", href: "/academy", icon: "mdi:school-outline" },
   { label: "Investor Centre", href: "/investor-centre", icon: "mdi:bank" },
   { label: "Articles & Knowledge", href: "/articles", icon: "mdi:book-open-variant" },
   { label: "Events", href: "/events", icon: "mdi:calendar-month" },
