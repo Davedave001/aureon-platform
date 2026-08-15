@@ -61,9 +61,6 @@ export function CommunityBrowser() {
                     <span className="block truncate text-sm font-medium text-foreground">
                       {c.name}
                     </span>
-                    <span className="block text-xs text-muted-foreground">
-                      {c.members}
-                    </span>
                   </span>
                   <Icon
                     icon="mdi:chevron-right"

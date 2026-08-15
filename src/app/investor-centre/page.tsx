@@ -1,7 +1,5 @@
 import { AppShell } from "@/components/layout/app-shell";
-import { InvestorStatsRow } from "@/components/investor/stats-row";
-import { InquiriesTable } from "@/components/investor/inquiries-table";
-import { InquiryTimeline } from "@/components/investor/inquiry-timeline";
+import { LiveInvestor } from "@/components/investor/live-investor";
 import { MeetingScheduler } from "@/components/investor/meeting-scheduler";
 import { NewInquiryForm } from "@/components/investor/new-inquiry-form";
 import { SecureDocuments } from "@/components/investor/secure-documents";
@@ -21,12 +19,8 @@ export default function InvestorCentrePage() {
 
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
           <div className="flex flex-col gap-5 lg:col-span-2">
-            <InvestorStatsRow />
-            <InquiriesTable />
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <InquiryTimeline />
-              <MeetingScheduler />
-            </div>
+            <LiveInvestor />
+            <MeetingScheduler />
           </div>
 
           <div className="flex flex-col gap-5">

@@ -17,9 +17,6 @@ export function DiscoverCategories() {
             <span className="text-xs font-medium text-foreground">
               {c.label}
             </span>
-            <span className="text-[11px] text-muted-foreground">
-              {c.count}
-            </span>
           </div>
         ))}
       </div>

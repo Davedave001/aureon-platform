@@ -1,3 +1,4 @@
+import { Icon } from "@iconify/react";
 import { TickerStrip } from "@/components/news-terminal/ticker-strip";
 import { MarketMovers } from "@/components/news-terminal/market-movers";
 import { ChartPanel } from "@/components/news-terminal/chart-panel";
@@ -20,6 +21,22 @@ import { MarketOverview } from "@/components/news-terminal/market-overview";
 export function TerminalDashboard() {
   return (
     <div className="flex flex-col gap-5">
+      <div className="flex items-start gap-3 rounded-xl border border-gold/25 bg-gold/5 p-4">
+        <Icon
+          icon="mdi:information-outline"
+          className="mt-0.5 size-5 shrink-0 text-gold"
+        />
+        <div>
+          <p className="text-sm font-semibold text-foreground">
+            Sample market data
+          </p>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            Prices, movers, and news below are illustrative. Live market data
+            connects once a data provider is configured.
+          </p>
+        </div>
+      </div>
+
       <TickerStrip />
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">

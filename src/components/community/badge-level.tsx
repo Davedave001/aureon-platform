@@ -1,40 +1,88 @@
-import { Icon } from "@iconify/react";
-import { Progress } from "@/components/ui/progress";
-import { SectionCard } from "@/components/shared/section-card";
+"use client";
 
-const levels = [
-  { label: "Verified Trader", icon: "mdi:check-decagram", tone: "text-bull" },
-  { label: "Professional Trader", icon: "mdi:medal-outline", tone: "text-violet-400" },
-  { label: "Aureon Mentor", icon: "mdi:crown-outline", tone: "text-gold" },
-];
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { Icon } from "@iconify/react";
+import { SectionCard } from "@/components/shared/section-card";
+import { apiFetch } from "@/lib/api";
+
+type Profile = { verified: boolean; badge: string | null };
 
 export function BadgeLevel() {
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    void (async () => {
+      const res = await apiFetch("/api/profile");
+      if (res.ok) {
+        const { profile: p } = (await res.json()) as { profile: Profile };
+        setProfile(p);
+      }
+      setLoading(false);
+    })();
+  }, []);
+
+  const verified = profile?.verified ?? false;
+  const badge = profile?.badge ?? null;
+
   return (
     <SectionCard title="Your Badge Level">
-      <div className="flex flex-col items-center py-2 text-center">
-        <div className="flex size-16 items-center justify-center rounded-full bg-gold/12">
-          <Icon icon="mdi:shield-check" className="size-8 text-gold" />
-        </div>
-        <p className="mt-2.5 text-sm font-semibold text-foreground">
-          Professional Trader
-        </p>
-        <p className="text-xs text-muted-foreground">Aureon Mentor</p>
-      </div>
-      <p className="text-xs text-muted-foreground">Next badge: Aureon Mentor</p>
-      <Progress
-        value={75}
-        className="mt-1.5 [&_[data-slot=progress-indicator]]:bg-gold [&_[data-slot=progress-track]]:h-2"
-      />
-      <p className="mt-1 text-right text-xs font-medium text-gold">75%</p>
+      {loading ? (
+        <div className="h-40 animate-pulse rounded-lg bg-secondary/40" />
+      ) : (
+        <>
+          <div className="flex flex-col items-center py-2 text-center">
+            <div
+              className={
+                "flex size-16 items-center justify-center rounded-full " +
+                (verified ? "bg-gold/12" : "bg-secondary")
+              }
+            >
+              <Icon
+                icon={verified ? "mdi:shield-check" : "mdi:shield-outline"}
+                className={"size-8 " + (verified ? "text-gold" : "text-muted-foreground")}
+              />
+            </div>
+            <p className="mt-2.5 text-sm font-semibold text-foreground">
+              {verified ? badge ?? "Verified" : "Not verified yet"}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {verified
+                ? "You've earned a verified badge."
+                : "Submit your track record to get verified."}
+            </p>
+          </div>
 
-      <ul className="mt-2 space-y-2 border-t border-border pt-3">
-        {levels.map((l) => (
-          <li key={l.label} className="flex items-center gap-2.5">
-            <Icon icon={l.icon} className={`size-4 ${l.tone}`} />
-            <span className="text-xs text-foreground">{l.label}</span>
-          </li>
-        ))}
-      </ul>
+          <ul className="mt-2 space-y-2 border-t border-border pt-3">
+            <li className="flex items-center gap-2.5">
+              <Icon
+                icon={verified ? "mdi:check-circle" : "mdi:circle-outline"}
+                className={"size-4 " + (verified ? "text-bull" : "text-muted-foreground")}
+              />
+              <span className="text-xs text-foreground">Verified member</span>
+            </li>
+            <li className="flex items-center gap-2.5">
+              <Icon
+                icon={badge ? "mdi:check-circle" : "mdi:circle-outline"}
+                className={"size-4 " + (badge ? "text-gold" : "text-muted-foreground")}
+              />
+              <span className="text-xs text-foreground">
+                {badge ?? "Earn a mentor badge"}
+              </span>
+            </li>
+          </ul>
+
+          {!verified ? (
+            <Link
+              href="/community?tab=verification"
+              className="mt-3 block text-center text-xs font-medium text-primary hover:underline"
+            >
+              Start verification →
+            </Link>
+          ) : null}
+        </>
+      )}
     </SectionCard>
   );
 }
