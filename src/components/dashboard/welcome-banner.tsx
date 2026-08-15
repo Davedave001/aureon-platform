@@ -6,30 +6,6 @@ import { Icon } from "@iconify/react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const tickers = [
-  {
-    label: "S&P 500",
-    value: "5,278.40",
-    change: "+0.62%",
-    up: true,
-    icon: "mdi:bank-outline",
-  },
-  {
-    label: "BTC/USD",
-    value: "67,842.21",
-    change: "+1.18%",
-    up: true,
-    icon: "cryptocurrency-color:btc",
-  },
-  {
-    label: "EUR/USD",
-    value: "1.0845",
-    change: "-0.21%",
-    up: false,
-    icon: "mdi:currency-eur",
-  },
-];
-
 export function WelcomeBanner() {
   const { data: session } = useSession();
   const firstName =
@@ -87,29 +63,8 @@ export function WelcomeBanner() {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-3 lg:gap-4">
-          {tickers.map((t) => (
-            <div
-              key={t.label}
-              className="rounded-xl border border-primary/15 bg-white/[0.03] px-3.5 py-2.5 backdrop-blur-md"
-            >
-              <p className="flex items-center gap-1.5 text-[11px] font-medium text-white/60">
-                <Icon icon={t.icon} className="size-3.5" />
-                {t.label}
-              </p>
-              <p className="mt-0.5 text-sm font-semibold text-white">
-                {t.value}
-              </p>
-              <p
-                className={
-                  "text-[11px] font-medium " +
-                  (t.up ? "text-emerald-400" : "text-red-400")
-                }
-              >
-                {t.change}
-              </p>
-            </div>
-          ))}
+        <div className="hidden size-20 shrink-0 items-center justify-center rounded-2xl border border-primary/20 bg-white/[0.03] text-primary lg:flex">
+          <Icon icon="mdi:chart-line-variant" className="size-9" />
         </div>
       </div>
     </div>

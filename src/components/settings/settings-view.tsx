@@ -4,17 +4,13 @@ import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
-import { SoonButton } from "@/components/shared/soon-button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
 import { SectionCard } from "@/components/shared/section-card";
 import { apiFetch } from "@/lib/api";
 import {
   settingsTabs,
   notificationSettings,
-  connectedAccounts,
-  activeSessions,
   themeOptions,
   privacyToggles,
 } from "@/lib/settings-data";
@@ -377,64 +373,6 @@ export function SettingsView({ initialTab }: { initialTab?: string }) {
               </div>
             </SectionCard>
 
-            <SectionCard title="Connected Accounts">
-              <ul className="space-y-2.5">
-                {connectedAccounts.map((a) => (
-                  <li key={a.name} className="flex items-center gap-3">
-                    <Icon icon={a.icon} className="size-5 text-muted-foreground" />
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-foreground">
-                        {a.name}
-                      </p>
-                      <p className="truncate text-xs text-muted-foreground">
-                        {a.detail}
-                      </p>
-                    </div>
-                    <SoonButton
-                      size="sm"
-                      variant="outline"
-                      className="h-7 shrink-0 px-2 text-xs"
-                    >
-                      {a.connected ? "Disconnect" : "Connect"}
-                    </SoonButton>
-                  </li>
-                ))}
-              </ul>
-            </SectionCard>
-
-            <SectionCard title="Active Sessions">
-              <ul className="space-y-3">
-                {activeSessions.map((s, i) => (
-                  <li key={i} className="flex items-center gap-3">
-                    <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-secondary">
-                      <Icon icon={s.icon} className="size-4 text-muted-foreground" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="flex items-center gap-1.5 text-sm font-medium text-foreground">
-                        {s.device}
-                        {s.current ? (
-                          <Badge className="bg-bull/15 text-[10px] text-bull hover:bg-bull/15">
-                            This device
-                          </Badge>
-                        ) : null}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {s.location} · {s.time}
-                      </p>
-                    </div>
-                    {!s.current ? (
-                      <SoonButton
-                        size="sm"
-                        variant="outline"
-                        className="h-7 shrink-0 px-2 text-xs"
-                      >
-                        Revoke
-                      </SoonButton>
-                    ) : null}
-                  </li>
-                ))}
-              </ul>
-            </SectionCard>
           </div>
         ) : null}
 
