@@ -1,10 +1,6 @@
 import { AppShell } from "@/components/layout/app-shell";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { ProjectCards } from "@/components/ai-solutions/project-cards";
-import { WorkspaceStatsRow } from "@/components/ai-solutions/stats-row";
-import { ProjectTracker } from "@/components/ai-solutions/project-tracker";
-import { MeetingsList } from "@/components/ai-solutions/meetings-list";
-import { DeliverablesTable } from "@/components/ai-solutions/deliverables-table";
+import { LiveWorkspace } from "@/components/ai-solutions/live-workspace";
 import { NewRequestForm } from "@/components/ai-solutions/new-request-form";
 import { AiChatAssistant } from "@/components/ai-solutions/ai-chat-assistant";
 import { TradingJournal } from "@/components/ai-solutions/trading-journal";
@@ -38,13 +34,7 @@ export default async function AiSolutionsPage({
           <TabsContent value="services" className="mt-4">
             <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
               <div className="flex flex-col gap-5 lg:col-span-2">
-                <ProjectCards />
-                <WorkspaceStatsRow />
-                <ProjectTracker />
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <MeetingsList />
-                  <DeliverablesTable />
-                </div>
+                <LiveWorkspace />
               </div>
 
               <div className="flex flex-col gap-5">

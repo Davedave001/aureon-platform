@@ -53,6 +53,8 @@ export function NewRequestForm() {
     setSubmitting(false);
     if (res.ok) {
       setDone(true);
+      // Let the workspace list refresh without a full reload.
+      window.dispatchEvent(new CustomEvent("ai-request-created"));
     } else {
       const data = (await res.json().catch(() => ({}))) as { error?: string };
       setError(data.error ?? "Could not submit your request.");
