@@ -17,11 +17,16 @@ export async function apiFetch(
   path: string,
   init?: RequestInit
 ): Promise<Response> {
+  // Let the browser set the multipart boundary for FormData uploads; only
+  // default to JSON for regular bodies.
+  const isFormData =
+    typeof FormData !== "undefined" && init?.body instanceof FormData;
+
   return fetch(apiUrl(path), {
     credentials: "include",
     ...init,
     headers: {
-      "Content-Type": "application/json",
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
       ...(init?.headers ?? {}),
     },
   });

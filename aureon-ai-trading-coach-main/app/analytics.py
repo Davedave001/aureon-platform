@@ -1,7 +1,7 @@
 import pandas as pd
 from sqlalchemy import text
 
-from app.database import engine
+from app.database import get_engine
 
 
 def parse_trade_datetime(series):
@@ -18,7 +18,7 @@ def get_performance_summary():
 
     query = text("SELECT * FROM trades")
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     total_trades = len(df)
 
@@ -54,7 +54,7 @@ def get_pair_performance():
         ORDER BY total_profit DESC
     """)
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     if len(df) == 0:
         return {
@@ -82,7 +82,7 @@ def get_trade_statistics():
 
     query = text("SELECT profit FROM trades")
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     if len(df) == 0:
         return {}
@@ -118,7 +118,7 @@ def get_streak_analysis():
         ORDER BY id
     """)
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     longest_win_streak = 0
     longest_loss_streak = 0
@@ -160,7 +160,7 @@ def get_session_analysis():
         FROM trades
     """)
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     if len(df) == 0:
         return {}
@@ -213,7 +213,7 @@ def get_day_of_week_analysis():
         FROM trades
     """)
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     if len(df) == 0:
         return {}
@@ -251,7 +251,7 @@ def get_expectancy():
         FROM trades
     """)
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     if len(df) == 0:
         return {}
@@ -291,7 +291,7 @@ def get_trade_duration_analysis():
         FROM trades
     """)
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     if len(df) == 0:
         return {}
@@ -332,7 +332,7 @@ def detect_revenge_trading():
         ORDER BY open_time
     """)
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     if len(df) < 2:
         return {
@@ -383,7 +383,7 @@ def detect_overtrading(
         FROM trades
     """)
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     if len(df) == 0:
         return {}
@@ -425,7 +425,7 @@ def get_risk_reward_ratio():
         FROM trades
     """)
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     if len(df) == 0:
         return {}
@@ -470,7 +470,7 @@ def get_strategy_performance():
         WHERE strategy IS NOT NULL
     """)
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     if len(df) == 0:
         return {
@@ -512,7 +512,7 @@ def get_emotion_performance():
         WHERE emotion IS NOT NULL
     """)
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     if len(df) == 0:
         return {
@@ -554,7 +554,7 @@ def get_setup_performance():
         WHERE setup IS NOT NULL
     """)
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     if len(df) == 0:
         return {
@@ -595,7 +595,7 @@ def get_monthly_performance():
         FROM trades
     """)
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     if len(df) == 0:
         return {
@@ -642,7 +642,7 @@ def get_drawdown_analysis():
         ORDER BY open_time
     """)
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     if len(df) == 0:
         return {
@@ -691,7 +691,7 @@ def get_strategy_emotion_performance():
         AND emotion IS NOT NULL
     """)
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     if len(df) == 0:
         return {
@@ -734,7 +734,7 @@ def get_equity_curve():
         ORDER BY open_time
     """)
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     if len(df) == 0:
         return {
@@ -1035,7 +1035,7 @@ def analyze_trade_notes():
         WHERE notes IS NOT NULL
     """)
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     if len(df) == 0:
         return {
@@ -1139,7 +1139,7 @@ def get_pattern_detection():
         AND emotion IS NOT NULL
     """)
 
-    df = pd.read_sql(query, engine)
+    df = pd.read_sql(query, get_engine())
 
     if len(df) == 0:
         return {

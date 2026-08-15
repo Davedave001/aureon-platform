@@ -115,6 +115,41 @@ Both containers still need the shared vars from the tables above (same
 The shared cookie + CORS let the logged-in session work on cross-origin calls to
 `api.*`.
 
+## Third container — AI Trading Coach (Trading Journal & Backtesting)
+
+The **Trading Journal** and **Backtesting** tabs under AI Solutions are powered
+by the Python service in [`aureon-ai-trading-coach-main/`](aureon-ai-trading-coach-main).
+It runs as its **own container** and is **never exposed to the browser** — the
+Next API proxies to it at `/api/coach/*`, injecting a shared secret and the
+signed-in user's id so each user's trades live in a separate SQLite database.
+
+**Create a third Coolify service** from this repo with:
+
+- **Build context / Dockerfile:** `aureon-ai-trading-coach-main/Dockerfile`
+- **Internal only:** do **not** give it a public domain. Let the API container
+  reach it over Coolify's internal network (e.g. `http://coach:8000`). If you do
+  expose it, the `COACH_SECRET` below is what protects it.
+- **Persistent volume** mounted at `/data` (per-account databases live there).
+
+**Coach container runtime env:**
+
+| Variable       | Value                                  | Notes                                  |
+| -------------- | -------------------------------------- | -------------------------------------- |
+| `COACH_SECRET` | a long random string                   | Same value the API container sends     |
+| `COACH_DB_DIR` | `/data`                                | Matches the mounted volume (default)   |
+
+**API container — add these so it can reach the coach:**
+
+| Variable       | Value                                  |
+| -------------- | -------------------------------------- |
+| `COACH_URL`    | `http://coach:8000` (internal address) |
+| `COACH_SECRET` | the **same** random string as above    |
+
+Generate the secret like `AUTH_SECRET` (e.g. `openssl rand -hex 32`). Until
+`COACH_URL` is set, the Journal/Backtesting tabs stay in "coming soon" mode and
+nothing breaks. Once it's set, users can upload MetaTrader 5 / Exness trade CSVs
+and get live performance stats and an AI coach report.
+
 ## What's real vs. mock
 
 - **Real**: auth (signup/login/logout, sessions, hashed passwords, route

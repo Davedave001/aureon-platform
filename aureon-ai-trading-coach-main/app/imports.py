@@ -1,10 +1,7 @@
 import pandas as pd
-from sqlalchemy.orm import sessionmaker
 
-from app.database import engine
+from app.database import SessionLocal
 from app.models import Trade
-
-Session = sessionmaker(bind=engine)
 
 
 def import_trades(csv_path: str) -> None:
@@ -87,7 +84,7 @@ def import_trades(csv_path: str) -> None:
         .str.upper()
     )
 
-    session = Session()
+    session = SessionLocal()
 
     imported = 0
     skipped = 0
