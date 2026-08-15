@@ -4,7 +4,7 @@ import { aiNewsFeed } from "@/lib/news-terminal-data";
 
 export function AiNewsFeed() {
   return (
-    <SectionCard title="AI News Feed" viewAllHref="/news-terminal">
+    <SectionCard title="AI News Feed" viewAllHref="/ai-solutions?tab=news">
       <ul className="space-y-4">
         {aiNewsFeed.map((n) => (
           <li key={n.headline}>

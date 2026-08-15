@@ -69,7 +69,7 @@ export function WelcomeBanner() {
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Link
-              href="/news-terminal"
+              href="/ai-solutions?tab=news"
               className={cn(buttonVariants({ variant: "default" }), "shadow-md")}
             >
               Explore News Terminal

@@ -30,7 +30,7 @@ const toneClasses = {
 
 export function AiRecommendations() {
   return (
-    <SectionCard title="AI Recommendations" viewAllHref="/news-terminal">
+    <SectionCard title="AI Recommendations" viewAllHref="/ai-solutions?tab=news">
       <ul className="space-y-3.5">
         {recs.map((r) => (
           <li key={r.title} className="flex items-start gap-3">

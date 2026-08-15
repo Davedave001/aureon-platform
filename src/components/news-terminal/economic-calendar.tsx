@@ -10,7 +10,7 @@ const impactTone: Record<string, string> = {
 
 export function EconomicCalendar() {
   return (
-    <SectionCard title="Economic Calendar" viewAllHref="/news-terminal">
+    <SectionCard title="Economic Calendar" viewAllHref="/ai-solutions?tab=news">
       <ul className="space-y-3">
         {economicCalendar.map((e, i) => (
           <li key={i} className="flex items-start gap-2.5">

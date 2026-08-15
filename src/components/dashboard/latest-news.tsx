@@ -21,7 +21,7 @@ const news = [
 
 export function LatestNews() {
   return (
-    <SectionCard title="Latest Financial News" viewAllHref="/news-terminal">
+    <SectionCard title="Latest Financial News" viewAllHref="/ai-solutions?tab=news">
       <ul className="space-y-3.5">
         {news.map((n) => (
           <li key={n.headline} className="flex items-start gap-3">
