@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { managementCards } from "@/lib/admin-data";
 
@@ -26,20 +27,22 @@ export function ManagementCards() {
 
           <div className="mt-3 flex flex-wrap gap-1.5">
             {c.actions.map((a) => (
-              <button
+              <span
                 key={a}
-                type="button"
-                className="rounded-md border border-border px-2 py-1 text-[11px] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                className="rounded-md border border-border px-2 py-1 text-[11px] text-muted-foreground"
               >
                 {a}
-              </button>
+              </span>
             ))}
           </div>
 
-          <button className="mt-3 flex items-center gap-0.5 text-[11px] font-medium text-primary hover:underline">
-            {c.href}
+          <Link
+            href={c.href}
+            className="mt-3 flex items-center gap-0.5 text-[11px] font-medium text-primary hover:underline"
+          >
+            Open {c.title}
             <Icon icon="mdi:chevron-right" className="size-3" />
-          </button>
+          </Link>
         </div>
       ))}
     </div>

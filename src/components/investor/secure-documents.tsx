@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
+import { SoonButton } from "@/components/shared/soon-button";
 import { SectionCard } from "@/components/shared/section-card";
 import { secureDocuments } from "@/lib/investor-data";
 
@@ -27,9 +27,9 @@ export function SecureDocuments() {
                 Uploaded
               </span>
             ) : (
-              <Button size="sm" variant="outline" className="h-7 shrink-0 px-2.5 text-xs">
+              <SoonButton size="sm" variant="outline" className="h-7 shrink-0 px-2 text-xs">
                 Upload
-              </Button>
+              </SoonButton>
             )}
           </li>
         ))}

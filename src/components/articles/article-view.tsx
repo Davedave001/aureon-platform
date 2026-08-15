@@ -1,7 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { ArticleActions } from "./article-actions";
 import { article } from "@/lib/articles-data";
 import { dicebearAvatar, stockPhotos } from "@/lib/images";
 
@@ -9,10 +11,13 @@ export function ArticleView() {
   return (
     <article className="rounded-xl border border-border bg-card p-5">
       <div className="mb-3 flex items-center justify-between">
-        <button className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
+        <Link
+          href="/articles"
+          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+        >
           <Icon icon="mdi:arrow-left" className="size-4" />
           Back to Articles
-        </button>
+        </Link>
         <Badge className="bg-primary/15 text-primary hover:bg-primary/15">
           {article.category}
         </Badge>
@@ -42,24 +47,11 @@ export function ArticleView() {
           </span>
         </div>
 
-        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-          <button className="flex items-center gap-1 hover:text-foreground">
-            <Icon icon="mdi:bookmark-outline" className="size-4" />
-            Save
-          </button>
-          <button className="flex items-center gap-1 hover:text-foreground">
-            <Icon icon="mdi:heart-outline" className="size-4" />
-            {article.likes}
-          </button>
-          <button className="flex items-center gap-1 hover:text-foreground">
-            <Icon icon="mdi:comment-outline" className="size-4" />
-            {article.comments}
-          </button>
-          <button className="flex items-center gap-1 hover:text-foreground">
-            <Icon icon="mdi:share-variant-outline" className="size-4" />
-            Share
-          </button>
-        </div>
+        <ArticleActions
+          slug="ai-transforming-financial-markets-2024"
+          likes={article.likes}
+          comments={article.comments}
+        />
       </div>
 
       <div className="relative mt-4 aspect-[16/7] w-full overflow-hidden rounded-lg">

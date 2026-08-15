@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { SoonButton } from "@/components/shared/soon-button";
 
 export function AnnualBillingBanner() {
   return (
@@ -11,10 +11,10 @@ export function AnnualBillingBanner() {
           Switch to annual billing and save up to 20% on your subscription.
         </p>
       </div>
-      <Button size="sm" className="shrink-0">
+      <SoonButton size="sm" className="shrink-0">
         Switch to Annual
-        <span className="ml-1 text-[11px] opacity-80">(20% Savings)</span>
-      </Button>
+        <span className="text-[11px] opacity-80">(20% Savings)</span>
+      </SoonButton>
     </div>
   );
 }

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Icon } from "@iconify/react";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const tickers = [
@@ -74,13 +74,16 @@ export function WelcomeBanner() {
             >
               Explore News Terminal
             </Link>
-            <Button
-              variant="outline"
-              className="gap-1.5 border-primary/30 bg-transparent text-white hover:bg-primary/10 hover:text-white"
+            <Link
+              href="/ai-solutions"
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "gap-1.5 border-primary/30 bg-transparent text-white hover:bg-primary/10 hover:text-white"
+              )}
             >
               <Icon icon="mdi:creation" className="size-4" />
               Ask AI Assistant
-            </Button>
+            </Link>
           </div>
         </div>
 

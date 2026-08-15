@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { SoonButton } from "@/components/shared/soon-button";
 import { Input } from "@/components/ui/input";
 import { SectionCard } from "@/components/shared/section-card";
 import { coupons } from "@/lib/billing-data";
@@ -10,7 +10,7 @@ export function CouponsList() {
     <SectionCard title="Available Coupons">
       <div className="mb-3 -mt-1 flex gap-2">
         <Input placeholder="Enter coupon code" className="flex-1" />
-        <Button size="sm">Apply</Button>
+        <SoonButton size="sm">Apply</SoonButton>
       </div>
       <ul className="space-y-2.5">
         {coupons.map((c) => (

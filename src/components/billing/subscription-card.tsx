@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { SoonButton } from "@/components/shared/soon-button";
 import { SectionCard } from "@/components/shared/section-card";
 import { currentSubscription } from "@/lib/billing-data";
 
@@ -28,9 +28,9 @@ export function SubscriptionCard() {
             </p>
           </div>
         </div>
-        <Button variant="outline" size="sm">
+        <SoonButton variant="outline" size="sm">
           Manage
-        </Button>
+        </SoonButton>
       </div>
 
       <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">

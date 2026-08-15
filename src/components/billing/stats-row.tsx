@@ -24,9 +24,6 @@ export function BillingStatsRow() {
           <p className="mt-0.5 truncate text-xs text-muted-foreground">
             {s.detail}
           </p>
-          <button className="mt-2 text-[11px] font-medium text-primary hover:underline">
-            {s.href}
-          </button>
         </div>
       ))}
     </div>

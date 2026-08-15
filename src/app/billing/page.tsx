@@ -1,3 +1,4 @@
+import { Icon } from "@iconify/react";
 import { AppShell } from "@/components/layout/app-shell";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { BillingStatsRow } from "@/components/billing/stats-row";
@@ -18,6 +19,23 @@ export default function BillingPage() {
       subtitle="Manage your subscriptions, payments, and billing preferences."
     >
       <div className="mx-auto flex max-w-[1400px] flex-col gap-5">
+        <div className="flex items-start gap-3 rounded-xl border border-primary/25 bg-primary/5 p-4">
+          <Icon
+            icon="mdi:information-outline"
+            className="mt-0.5 size-5 shrink-0 text-primary"
+          />
+          <div>
+            <p className="text-sm font-semibold text-foreground">
+              Billing is in preview
+            </p>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              Plans and payment history shown here are examples. Live payments
+              (Stripe / Paystack) are coming soon, so payment actions are
+              disabled for now.
+            </p>
+          </div>
+        </div>
+
         <Tabs defaultValue="Overview">
           <TabsList variant="line" className="w-full overflow-x-auto">
             {billingTabs.map((t) => (

@@ -72,7 +72,10 @@ export function LiveArticleComments({ slug }: { slug: string }) {
   const meInitials = initialsOf(session?.user?.name, session?.user?.email);
 
   return (
-    <div className="mt-5 rounded-xl border border-border bg-card p-5">
+    <div
+      id="comments"
+      className="mt-5 scroll-mt-20 rounded-xl border border-border bg-card p-5"
+    >
       <h2 className="mb-4 text-sm font-semibold text-foreground">
         Comments ({loading ? "…" : comments.length})
       </h2>

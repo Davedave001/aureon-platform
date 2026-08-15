@@ -1,8 +1,10 @@
+import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { AppShell } from "@/components/layout/app-shell";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { cn } from "@/lib/utils";
 import { SectionCard } from "@/components/shared/section-card";
 import { ProfileView } from "@/components/profile/profile-view";
 import {
@@ -72,9 +74,15 @@ export default function ProfilePage() {
                   </li>
                 ))}
               </ul>
-              <Button variant="outline" size="sm" className="mt-3 w-full">
+              <Link
+                href="/community?tab=verification"
+                className={cn(
+                  buttonVariants({ variant: "outline", size: "sm" }),
+                  "mt-3 w-full"
+                )}
+              >
                 Manage Verification
-              </Button>
+              </Link>
             </SectionCard>
 
             <SectionCard title="Membership">
@@ -100,9 +108,15 @@ export default function ProfilePage() {
                   </li>
                 ))}
               </ul>
-              <Button variant="outline" size="sm" className="mt-3 w-full">
+              <Link
+                href="/billing"
+                className={cn(
+                  buttonVariants({ variant: "outline", size: "sm" }),
+                  "mt-3 w-full"
+                )}
+              >
                 Manage Subscription
-              </Button>
+              </Link>
             </SectionCard>
           </div>
         </div>

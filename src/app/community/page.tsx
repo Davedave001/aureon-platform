@@ -6,14 +6,22 @@ import { LiveMentorDirectory } from "@/components/community/live-mentor-director
 import { LiveVerificationCenter } from "@/components/community/live-verification";
 import { BadgeLevel } from "@/components/community/badge-level";
 
-export default function CommunityHubPage() {
+const TABS = ["explorer", "feed", "mentors", "verification"];
+
+export default async function CommunityHubPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ tab?: string }>;
+}) {
+  const { tab } = await searchParams;
+  const initialTab = tab && TABS.includes(tab) ? tab : "explorer";
   return (
     <AppShell
       title="Community Hub"
       subtitle="Connect. Learn. Share. Grow together."
     >
       <div className="mx-auto flex max-w-[1400px] flex-col gap-5">
-        <Tabs defaultValue="explorer">
+        <Tabs defaultValue={initialTab}>
           <TabsList variant="line">
             <TabsTrigger value="explorer">Communities</TabsTrigger>
             <TabsTrigger value="feed">All Posts</TabsTrigger>

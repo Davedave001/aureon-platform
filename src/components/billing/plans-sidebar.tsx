@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { SoonButton } from "@/components/shared/soon-button";
 import { SectionCard } from "@/components/shared/section-card";
 import { plans } from "@/lib/billing-data";
 import { cn } from "@/lib/utils";
@@ -48,20 +49,27 @@ export function PlansSidebar() {
                 </li>
               ))}
             </ul>
-            <Button
-              size="sm"
-              variant={p.current ? "outline" : p.popular ? "default" : "outline"}
-              disabled={p.current}
-              className="mt-3 w-full"
-            >
-              {p.current ? "Current Plan" : "Upgrade"}
-            </Button>
+            {p.current ? (
+              <Button
+                size="sm"
+                variant="outline"
+                disabled
+                className="mt-3 w-full"
+              >
+                Current Plan
+              </Button>
+            ) : (
+              <SoonButton
+                size="sm"
+                variant={p.popular ? "default" : "outline"}
+                className="mt-3 w-full"
+              >
+                Upgrade
+              </SoonButton>
+            )}
           </div>
         ))}
       </div>
-      <button className="mt-3 w-full text-center text-xs font-medium text-primary hover:underline">
-        Compare All Plans
-      </button>
     </SectionCard>
   );
 }

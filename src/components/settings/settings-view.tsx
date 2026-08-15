@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
+import { SoonButton } from "@/components/shared/soon-button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
@@ -58,8 +59,10 @@ function ToggleRow({
 
 type Prefs = Record<string, unknown>;
 
-export function SettingsView() {
-  const [tab, setTab] = useState<(typeof settingsTabs)[number]["key"]>("Account");
+export function SettingsView({ initialTab }: { initialTab?: string }) {
+  type TabKey = (typeof settingsTabs)[number]["key"];
+  const validTab = settingsTabs.find((t) => t.key === initialTab)?.key;
+  const [tab, setTab] = useState<TabKey>(validTab ?? "Account");
   const { theme, setTheme } = useTheme();
 
   // Avoid a hydration mismatch: theme is only known on the client.
@@ -73,6 +76,40 @@ export function SettingsView() {
   const [language, setLanguage] = useState("English");
   const [savingAccount, setSavingAccount] = useState(false);
   const [savedAccount, setSavedAccount] = useState(false);
+
+  const [curPw, setCurPw] = useState("");
+  const [newPw, setNewPw] = useState("");
+  const [confirmPw, setConfirmPw] = useState("");
+  const [pwSaving, setPwSaving] = useState(false);
+  const [pwMsg, setPwMsg] = useState<{ ok: boolean; text: string } | null>(null);
+
+  async function updatePassword(e: React.FormEvent) {
+    e.preventDefault();
+    setPwMsg(null);
+    if (newPw.length < 8) {
+      setPwMsg({ ok: false, text: "New password must be at least 8 characters." });
+      return;
+    }
+    if (newPw !== confirmPw) {
+      setPwMsg({ ok: false, text: "New passwords do not match." });
+      return;
+    }
+    setPwSaving(true);
+    const res = await apiFetch("/api/account/password", {
+      method: "POST",
+      body: JSON.stringify({ currentPassword: curPw, newPassword: newPw }),
+    });
+    setPwSaving(false);
+    if (res.ok) {
+      setPwMsg({ ok: true, text: "Password updated." });
+      setCurPw("");
+      setNewPw("");
+      setConfirmPw("");
+    } else {
+      const data = (await res.json().catch(() => ({}))) as { error?: string };
+      setPwMsg({ ok: false, text: data.error ?? "Could not update password." });
+    }
+  }
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -272,21 +309,57 @@ export function SettingsView() {
         {tab === "Security" ? (
           <div className="flex flex-col gap-5">
             <SectionCard title="Password">
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <Field label="Current Password">
-                  <Input type="password" placeholder="••••••••" />
-                </Field>
-                <div />
-                <Field label="New Password">
-                  <Input type="password" placeholder="••••••••" />
-                </Field>
-                <Field label="Confirm New Password">
-                  <Input type="password" placeholder="••••••••" />
-                </Field>
-              </div>
-              <div className="mt-4 flex justify-end">
-                <Button size="sm">Update Password</Button>
-              </div>
+              <form onSubmit={updatePassword}>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <Field label="Current Password">
+                    <Input
+                      type="password"
+                      placeholder="••••••••"
+                      value={curPw}
+                      onChange={(e) => setCurPw(e.target.value)}
+                      autoComplete="current-password"
+                    />
+                  </Field>
+                  <div />
+                  <Field label="New Password">
+                    <Input
+                      type="password"
+                      placeholder="••••••••"
+                      value={newPw}
+                      onChange={(e) => setNewPw(e.target.value)}
+                      autoComplete="new-password"
+                    />
+                  </Field>
+                  <Field label="Confirm New Password">
+                    <Input
+                      type="password"
+                      placeholder="••••••••"
+                      value={confirmPw}
+                      onChange={(e) => setConfirmPw(e.target.value)}
+                      autoComplete="new-password"
+                    />
+                  </Field>
+                </div>
+                <div className="mt-4 flex items-center justify-end gap-3">
+                  {pwMsg ? (
+                    <span
+                      className={cn(
+                        "text-xs",
+                        pwMsg.ok ? "text-bull" : "text-bear"
+                      )}
+                    >
+                      {pwMsg.text}
+                    </span>
+                  ) : null}
+                  <Button
+                    type="submit"
+                    size="sm"
+                    disabled={pwSaving || !curPw || !newPw || !confirmPw}
+                  >
+                    {pwSaving ? "Updating…" : "Update Password"}
+                  </Button>
+                </div>
+              </form>
             </SectionCard>
 
             <SectionCard title="Two-Factor Authentication">
@@ -297,9 +370,10 @@ export function SettingsView() {
                   </p>
                   <p className="text-xs text-muted-foreground">
                     Require a one-time code at sign-in for extra security.
+                    Coming soon.
                   </p>
                 </div>
-                <Switch defaultChecked />
+                <Switch checked={false} disabled />
               </div>
             </SectionCard>
 
@@ -316,13 +390,13 @@ export function SettingsView() {
                         {a.detail}
                       </p>
                     </div>
-                    <Button
+                    <SoonButton
                       size="sm"
                       variant="outline"
-                      className="h-7 shrink-0 px-2.5 text-xs"
+                      className="h-7 shrink-0 px-2 text-xs"
                     >
                       {a.connected ? "Disconnect" : "Connect"}
-                    </Button>
+                    </SoonButton>
                   </li>
                 ))}
               </ul>
@@ -349,13 +423,13 @@ export function SettingsView() {
                       </p>
                     </div>
                     {!s.current ? (
-                      <Button
+                      <SoonButton
                         size="sm"
                         variant="outline"
-                        className="h-7 shrink-0 px-2.5 text-xs hover:text-bear"
+                        className="h-7 shrink-0 px-2 text-xs"
                       >
                         Revoke
-                      </Button>
+                      </SoonButton>
                     ) : null}
                   </li>
                 ))}

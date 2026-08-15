@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { SoonButton } from "@/components/shared/soon-button";
 import { SectionCard } from "@/components/shared/section-card";
 import { paymentMethods } from "@/lib/billing-data";
 
@@ -27,16 +27,20 @@ export function PaymentMethodsList() {
                 Expires {m.expiry}
               </p>
             </div>
-            <Button size="sm" variant="outline" className="h-7 px-2.5 text-xs">
+            <SoonButton
+              size="sm"
+              variant="outline"
+              className="h-7 px-2.5 text-xs"
+            >
               Remove
-            </Button>
+            </SoonButton>
           </li>
         ))}
       </ul>
-      <Button variant="outline" size="sm" className="mt-3 w-full gap-1.5">
+      <SoonButton variant="outline" size="sm" className="mt-3 w-full">
         <Icon icon="mdi:plus" className="size-4" />
         Add Payment Method
-      </Button>
+      </SoonButton>
     </SectionCard>
   );
 }

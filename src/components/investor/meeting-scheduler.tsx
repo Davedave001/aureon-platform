@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
+import { SoonButton } from "@/components/shared/soon-button";
 import { SectionCard } from "@/components/shared/section-card";
 import { meetingTypes, availableTimes } from "@/lib/investor-data";
 import { cn } from "@/lib/utils";
@@ -117,10 +117,10 @@ export function MeetingScheduler() {
         ))}
       </div>
 
-      <Button className="mt-4 w-full gap-1.5">
+      <SoonButton className="mt-4 w-full">
         <Icon icon="mdi:calendar-check" className="size-4" />
         Confirm Meeting
-      </Button>
+      </SoonButton>
     </SectionCard>
   );
 }

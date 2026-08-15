@@ -10,11 +10,16 @@ export function QuickActions() {
           <button
             key={a.label}
             type="button"
-            className="flex flex-col items-start gap-1.5 rounded-lg border border-border p-2.5 text-left transition-colors hover:bg-accent"
+            disabled
+            title="Coming soon"
+            className="flex cursor-not-allowed flex-col items-start gap-1.5 rounded-lg border border-border p-2.5 text-left opacity-70"
           >
             <Icon icon={a.icon} className="size-4 text-primary" />
-            <span className="text-[11px] font-medium text-foreground">
+            <span className="flex items-center gap-1 text-[11px] font-medium text-foreground">
               {a.label}
+              <span className="rounded bg-muted px-1 text-[8px] font-semibold uppercase text-muted-foreground">
+                Soon
+              </span>
             </span>
           </button>
         ))}

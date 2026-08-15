@@ -9,10 +9,9 @@ export function DiscoverCategories() {
       </p>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
         {discoverCategories.map((c) => (
-          <button
+          <div
             key={c.label}
-            type="button"
-            className="flex flex-col items-center gap-1.5 rounded-lg border border-border p-3 text-center transition-colors hover:bg-accent"
+            className="flex flex-col items-center gap-1.5 rounded-lg border border-border p-3 text-center"
           >
             <Icon icon={c.icon} className="size-5 text-primary" />
             <span className="text-xs font-medium text-foreground">
@@ -21,7 +20,7 @@ export function DiscoverCategories() {
             <span className="text-[11px] text-muted-foreground">
               {c.count}
             </span>
-          </button>
+          </div>
         ))}
       </div>
     </div>

@@ -50,13 +50,10 @@ export function ProjectTracker() {
                   </div>
                 </div>
               ))}
-              <button
-                type="button"
-                className="flex w-full items-center gap-1 rounded-lg border border-dashed border-border px-2.5 py-2 text-[11px] text-muted-foreground transition-colors hover:bg-accent"
-              >
+              <div className="flex w-full items-center gap-1 rounded-lg border border-dashed border-border px-2.5 py-2 text-[11px] text-muted-foreground">
                 <Icon icon="mdi:plus" className="size-3.5" />
-                Add Project
-              </button>
+                New projects start from a request below
+              </div>
             </div>
           </div>
         ))}

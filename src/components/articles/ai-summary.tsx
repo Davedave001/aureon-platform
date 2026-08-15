@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
+import { SoonButton } from "@/components/shared/soon-button";
 import { SectionCard } from "@/components/shared/section-card";
 import { keyTakeaways } from "@/lib/articles-data";
 
@@ -11,14 +11,14 @@ export function AiSummary() {
         Get key insights from this article instantly.
       </div>
       <div className="flex flex-col gap-2">
-        <Button size="sm" className="gap-1.5">
+        <SoonButton size="sm">
           <Icon icon="mdi:creation" className="size-4" />
           Summarize Article
-        </Button>
-        <Button size="sm" variant="outline" className="gap-1.5">
+        </SoonButton>
+        <SoonButton size="sm" variant="outline">
           <Icon icon="mdi:format-list-bulleted" className="size-4" />
           Generate Key Points
-        </Button>
+        </SoonButton>
       </div>
 
       <p className="mt-4 mb-2 text-xs font-semibold text-foreground">

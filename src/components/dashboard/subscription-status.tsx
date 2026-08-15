@@ -1,7 +1,9 @@
+import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { SectionCard } from "@/components/shared/section-card";
+import { cn } from "@/lib/utils";
 
 const perks = [
   "News Terminal Access",
@@ -30,9 +32,15 @@ export function SubscriptionStatus() {
           </li>
         ))}
       </ul>
-      <Button variant="outline" size="sm" className="mt-3 w-full">
+      <Link
+        href="/billing"
+        className={cn(
+          buttonVariants({ variant: "outline", size: "sm" }),
+          "mt-3 w-full"
+        )}
+      >
         Manage Subscription
-      </Button>
+      </Link>
     </SectionCard>
   );
 }

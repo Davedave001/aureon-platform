@@ -9,7 +9,7 @@ import { primaryNav, secondaryNav } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import { initialsOf, roleLabel } from "@/lib/user-display";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -98,9 +98,12 @@ export function SidebarContent() {
           <p className="mt-0.5 text-xs text-muted-foreground">
             Unlock premium tools, AI insights, and more.
           </p>
-          <Button size="sm" className="mt-3 w-full">
+          <Link
+            href="/billing"
+            className={cn(buttonVariants({ size: "sm" }), "mt-3 w-full")}
+          >
             Upgrade Now
-          </Button>
+          </Link>
         </div>
 
         <div className="flex items-center gap-2.5 rounded-lg border border-sidebar-border p-2.5">

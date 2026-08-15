@@ -1,5 +1,7 @@
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 import { SectionCard } from "@/components/shared/section-card";
+import { cn } from "@/lib/utils";
 
 const events = [
   { title: "AI in Finance Webinar", date: "MAY 24", meta: "7:00 PM GMT+1" },
@@ -27,9 +29,15 @@ export function UpcomingEvents() {
               </p>
               <p className="text-xs text-muted-foreground">{e.meta}</p>
             </div>
-            <Button size="sm" variant="secondary" className="h-7 px-2.5 text-xs">
+            <Link
+              href="/events"
+              className={cn(
+                buttonVariants({ size: "sm", variant: "secondary" }),
+                "h-7 px-2.5 text-xs"
+              )}
+            >
               Register
-            </Button>
+            </Link>
           </li>
         ))}
       </ul>

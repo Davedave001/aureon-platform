@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { SoonButton } from "@/components/shared/soon-button";
 import { SectionCard } from "@/components/shared/section-card";
 import { meetings } from "@/lib/ai-solutions-data";
 import { dicebearAvatar } from "@/lib/images";
@@ -38,10 +38,10 @@ export function MeetingsList() {
                 ) : null}
               </div>
             </div>
-            <Button size="sm" className="h-7 shrink-0 gap-1 px-2.5 text-xs">
+            <SoonButton size="sm" className="h-7 shrink-0 px-2 text-xs">
               <Icon icon="mdi:video-outline" className="size-3.5" />
               Join
-            </Button>
+            </SoonButton>
           </li>
         ))}
       </ul>

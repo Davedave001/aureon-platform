@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
+import { SoonButton } from "@/components/shared/soon-button";
 import { cn } from "@/lib/utils";
 
 const symbols = ["BTC/USD", "EUR/USD", "AAPL", "XAU/USD"];
@@ -63,9 +63,9 @@ export function ChartPanel() {
           Real-time candlestick data for {symbol} ({timeframe}) will render
           here once a market data provider is connected.
         </p>
-        <Button variant="outline" size="sm" className="mt-4">
+        <SoonButton variant="outline" size="sm" className="mt-4">
           Connect Chart Provider
-        </Button>
+        </SoonButton>
       </div>
     </div>
   );
