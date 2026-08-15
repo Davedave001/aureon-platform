@@ -1,0 +1,4 @@
+ticket,symbol,direction,open_time,close_time,volume,open_price,close_price,profit,commission,swap
+20001,EURUSD,BUY,2025-06-01 09:00,2025-06-01 10:30,0.10,1.1200,1.1250,50,-1,0
+20002,XAUUSD,SELL,2025-06-02 11:00,2025-06-02 11:45,0.20,2350.0,2340.0,200,-2,0
+20003,GBPUSD,BUY,2025-06-03 14:00,2025-06-03 15:00,0.10,1.2700,1.2680,-20,-1,0

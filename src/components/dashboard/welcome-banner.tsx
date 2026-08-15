@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { Icon } from "@iconify/react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -28,6 +31,12 @@ const tickers = [
 ];
 
 export function WelcomeBanner() {
+  const { data: session } = useSession();
+  const firstName =
+    session?.user?.name?.trim().split(/\s+/)[0] ??
+    session?.user?.email?.split("@")[0] ??
+    "there";
+
   return (
     <div
       className="relative overflow-hidden rounded-2xl border border-primary/25 bg-black p-6 shadow-[inset_0_1px_0_rgba(233,219,180,0.08),0_20px_40px_-20px_rgba(0,0,0,0.8)] sm:p-8"
@@ -52,7 +61,8 @@ export function WelcomeBanner() {
       <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h2 className="text-2xl font-bold text-white sm:text-3xl">
-            Welcome back, <span className="text-primary italic">David</span> 👋
+            Welcome back,{" "}
+            <span className="text-primary italic">{firstName}</span> 👋
           </h2>
           <p className="mt-1.5 max-w-md text-sm text-white/70">
             Stay informed. Stay ahead. Let AI power your decisions.

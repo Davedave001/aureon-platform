@@ -1,0 +1,4 @@
+ticket,symbol,direction,open_time,close_time,volume,open_price,close_price,profit,commission,swap,strategy,setup,emotion,notes
+30001,EURUSD,BUY,2025-06-04 09:00,2025-06-04 10:00,0.10,1.1200,1.1260,60,-1,0,Breakout,London Open,Confident,Entered after clean breakout
+30002,XAUUSD,SELL,2025-06-05 14:00,2025-06-05 15:30,0.20,2360.0,2370.0,-100,-2,0,Reversal,NY Rejection,Frustrated,Entered too early after loss
+30003,GBPUSD,BUY,2025-06-06 08:30,2025-06-06 09:30,0.10,1.2700,1.2760,60,-1,0,Breakout,London Open,Calm,Followed trading plan

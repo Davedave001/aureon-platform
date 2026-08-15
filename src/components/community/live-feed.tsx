@@ -45,20 +45,33 @@ function timeAgo(iso: string) {
   return new Date(iso).toLocaleDateString();
 }
 
-export function LiveFeed() {
+export function LiveFeed({ filterCommunity }: { filterCommunity?: string }) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
 
-  const [community, setCommunity] = useState<string>(categories[0].name);
+  const [community, setCommunity] = useState<string>(
+    filterCommunity ?? categories[0].name
+  );
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [posting, setPosting] = useState(false);
 
-  async function load() {
+  // Keep the create-post community in sync with the browsed one (render-time
+  // adjustment — no effect needed).
+  const [prevFilter, setPrevFilter] = useState(filterCommunity);
+  if (filterCommunity !== prevFilter) {
+    setPrevFilter(filterCommunity);
+    if (filterCommunity) setCommunity(filterCommunity);
+  }
+
+  async function load(forCommunity?: string) {
     setLoading(true);
     try {
-      const res = await apiFetch("/api/posts");
+      const url = forCommunity
+        ? `/api/posts?community=${encodeURIComponent(forCommunity)}`
+        : "/api/posts";
+      const res = await apiFetch(url);
       if (res.ok) {
         const data = (await res.json()) as { posts: Post[] };
         setPosts(data.posts);
@@ -68,10 +81,11 @@ export function LiveFeed() {
     }
   }
 
+  // Refetch when the selected community changes (fetch-on-change effect).
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    void load();
-  }, []);
+    void load(filterCommunity);
+  }, [filterCommunity]);
 
   async function createPost(e: React.FormEvent) {
     e.preventDefault();

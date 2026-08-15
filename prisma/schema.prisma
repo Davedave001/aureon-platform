@@ -40,6 +40,18 @@ model User {
   preferences   UserPreferences?
   verifications VerificationSubmission[]   @relation("submitter")
   reviewed      VerificationSubmission[]   @relation("reviewer")
+  articleComments ArticleComment[]
+}
+
+model ArticleComment {
+  id          String   @id @default(cuid())
+  articleSlug String
+  userId      String
+  body        String
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([articleSlug, createdAt])
 }
 
 model VerificationSubmission {
