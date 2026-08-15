@@ -41,6 +41,61 @@ model User {
   verifications VerificationSubmission[]   @relation("submitter")
   reviewed      VerificationSubmission[]   @relation("reviewer")
   articleComments ArticleComment[]
+  autoTradeConfig AutoTradeConfig?
+  tradeOrders   TradeOrder[]
+}
+
+// A market-moving news item picked up from a source (X, Truth Social, a news
+// API, or a manual/AI push) and classified into a tradeable signal.
+model NewsSignal {
+  id         String   @id @default(cuid())
+  source     String // "x" | "truthsocial" | "news" | "manual"
+  author     String? // e.g. "@realDonaldTrump"
+  headline   String
+  body       String?
+  url        String?
+  instrument String? // e.g. "EURUSD" | "XAUUSD" | "BTCUSD"
+  direction  String? // "buy" | "sell" | "neutral"
+  sentiment  String? // "bullish" | "bearish" | "neutral"
+  impact     String   @default("medium") // "high" | "medium" | "low"
+  confidence Int      @default(50) // 0-100
+  createdAt  DateTime @default(now())
+  orders     TradeOrder[]
+
+  @@index([createdAt])
+}
+
+// Per-user automated-trading guardrails. `enabled` doubles as the master
+// kill-switch. Trades only fire when a signal clears every threshold here.
+model AutoTradeConfig {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  enabled       Boolean  @default(false)
+  maxLot        Float    @default(0.1)
+  instruments   String? // comma-separated allowlist; empty = all
+  minConfidence Int      @default(70)
+  minImpact     String   @default("high") // only act on >= this impact
+  updatedAt     DateTime @updatedAt
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// An order produced by the auto-trade engine from a signal. Until an MT5
+// bridge is connected these are "simulated"; the same records become live
+// orders once execution is wired.
+model TradeOrder {
+  id         String      @id @default(cuid())
+  userId     String
+  signalId   String?
+  instrument String
+  direction  String // "buy" | "sell"
+  lot        Float
+  status     String      @default("simulated") // simulated | pending | filled | rejected | skipped
+  reason     String?
+  createdAt  DateTime    @default(now())
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  signal     NewsSignal? @relation(fields: [signalId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
 }
 
 model ArticleComment {

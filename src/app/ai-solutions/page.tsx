@@ -5,7 +5,7 @@ import { NewRequestForm } from "@/components/ai-solutions/new-request-form";
 import { AiChatAssistant } from "@/components/ai-solutions/ai-chat-assistant";
 import { TradingJournal } from "@/components/ai-solutions/trading-journal";
 import { Backtesting } from "@/components/ai-solutions/backtesting";
-import { TerminalDashboard } from "@/components/news-terminal/terminal-dashboard";
+import { NewsSignalsView } from "@/components/ai-solutions/news-signals";
 
 const TABS = ["services", "news", "journal", "backtesting"];
 
@@ -26,7 +26,7 @@ export default async function AiSolutionsPage({
         <Tabs defaultValue={initialTab}>
           <TabsList variant="line" className="w-full overflow-x-auto">
             <TabsTrigger value="services">AI Services</TabsTrigger>
-            <TabsTrigger value="news">News Terminal</TabsTrigger>
+            <TabsTrigger value="news">News Trading</TabsTrigger>
             <TabsTrigger value="journal">Trading Journal</TabsTrigger>
             <TabsTrigger value="backtesting">Backtesting</TabsTrigger>
           </TabsList>
@@ -45,7 +45,7 @@ export default async function AiSolutionsPage({
           </TabsContent>
 
           <TabsContent value="news" className="mt-4">
-            <TerminalDashboard />
+            <NewsSignalsView />
           </TabsContent>
 
           <TabsContent value="journal" className="mt-4">

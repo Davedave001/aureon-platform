@@ -150,6 +150,42 @@ Generate the secret like `AUTH_SECRET` (e.g. `openssl rand -hex 32`). Until
 nothing breaks. Once it's set, users can upload MetaTrader 5 / Exness trade CSVs
 and get live performance stats and an AI coach report.
 
+## News-trading engine (AI Solutions → News Trading)
+
+The News Trading tab detects market-moving news, alerts users instantly, and
+runs each user's automated-trade rules. Orders are **simulated** until an MT5
+execution bridge is connected — see the caveat at the bottom.
+
+**Feeding it news.** External collectors post raw items to a secret-gated
+webhook. Set one env var on the **API container**:
+
+| Variable             | Value                | Notes                              |
+| -------------------- | -------------------- | ---------------------------------- |
+| `NEWS_INGEST_SECRET` | a long random string | Collectors send it as `X-Ingest-Secret` |
+
+Post a signal like:
+
+```
+curl -X POST https://api.aureoncapitalai.com/api/news-signals/ingest \
+  -H "Content-Type: application/json" \
+  -H "X-Ingest-Secret: <your secret>" \
+  -d '{"source":"x","author":"@realDonaldTrump","headline":"New 25% tariffs on all imports"}'
+```
+
+The engine classifies the instrument/direction/impact automatically (you can
+also pass those fields to override). Wire this to an X/Twitter poller, a
+financial-news API poller, or an AI curator. **Admins** can also push a test
+signal straight from the News Trading tab with no external tooling.
+
+**Auto-trade & the MT5 bridge (important).** Each user sets guardrails in the
+tab (master kill-switch, max lot, min confidence, min impact, instrument
+allowlist). When a signal clears a user's thresholds an order is created — but
+because no MT5 execution path is connected, every order is recorded with status
+`simulated`. Making orders **live** is a separate, deliberate step: connect a
+bridge (a MetaTrader5 terminal via its Python package, or a broker/cloud API
+such as MetaApi.cloud) and swap the simulated write in `src/lib/news-ingest.ts`
+for the real order call. Nothing touches a real account until you do this.
+
 ## What's real vs. mock
 
 - **Real**: auth (signup/login/logout, sessions, hashed passwords, route
